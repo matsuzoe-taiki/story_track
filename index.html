@@ -17,7 +17,7 @@
                         続きを忘れないように記録しておきましょう
                     </p>
                 </div>
-        
+
                 <div class="btn-group">
                     <input type="radio" class="btn-check" name="type" id="anime" checked>
                     <label class="btn btn-outline-primary" for="anime">
@@ -29,17 +29,59 @@
                         マンガ
                     </label>
                 </div>
-        
             </div>
+            
+            <section class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">
+                        作品を追加
+                    </h2>
+                    <form id="story-form" class="row g-3">
+                        <div class="col-12 col-lg-4">
+                            <label for="title" class="form-label">
+                                タイトル
+                            </label>
+                            <input type="text" id="title" class="form-control" placeholder="作品名を入力" required>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <label for="season" class="form-label">
+                                シーズン
+                            </label>
+                            <input type="number" id="season" class="form-control" min="1" placeholder="1">
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <label for="episode" class="form-label">
+                                話数
+                            </label>
+                            <input type="number" id="episode" class="form-control" min="1" placeholder="1" required>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-2">
+                            <label for="startDate" class="form-label">
+                                見始めた日
+                            </label>
+                            <input type="date" id="startDate" class="form-control">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-2">
+                            <label for="lastDate" class="form-label">
+                                最近見た日
+                            </label>
+                            <input type="date" id="lastDate" class="form-control">
+                        </div>
+                        <div class="col-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary px-4">
+                                追加
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
         
             <div class="card shadow-sm border-0">
         
                 <div class="table-responsive">
         
                     <table class="table table-hover align-middle mb-0">
-        
                         <thead class="table-light">
-        
                             <tr>
                                 <th>タイトル</th>
                                 <th>シーズン</th>
@@ -47,41 +89,13 @@
                                 <th>見始めた日</th>
                                 <th>最近見た日</th>
                             </tr>
-        
                         </thead>
-        
-                        <tbody>
-        
-                            <tr>
-                                <td>葬送のフリーレン</td>
-                                <td>Season1</td>
-                                <td>18話</td>
-                                <td>2026/07/01</td>
-                                <td>2026/07/20</td>
-                            </tr>
-        
-                            <tr>
-                                <td>ダンダダン</td>
-                                <td>Season1</td>
-                                <td>10話</td>
-                                <td>2026/07/10</td>
-                                <td>2026/07/19</td>
-                            </tr>
-        
-                            <tr>
-                                <td>ワンピース</td>
-                                <td>Season1</td>
-                                <td>1136話</td>
-                                <td>2025/11/12</td>
-                                <td>2026/07/18</td>
-                            </tr>
-        
-                        </tbody>
-        
                     </table>
         
                 </div>
         
-            </div>    </div>
+            </div>    
+        </div>
+        <script type="module" src="./dist/index.js"></script>
     </body>
 </html>
