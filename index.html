@@ -30,52 +30,11 @@
                     </label>
                 </div>
             </div>
-            
-            <section class="card shadow-sm border-0 mb-4">
-                <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">
-                        作品を追加
-                    </h2>
-                    <form id="story-form" class="row g-3">
-                        <div class="col-12 col-lg-4">
-                            <label for="title" class="form-label">
-                                タイトル
-                            </label>
-                            <input type="text" id="title" class="form-control" placeholder="作品名を入力" required>
-                        </div>
-                        <div class="col-6 col-md-3 col-lg-2">
-                            <label for="season" class="form-label">
-                                シーズン
-                            </label>
-                            <input type="number" id="season" class="form-control" min="1" placeholder="1">
-                        </div>
-                        <div class="col-6 col-md-3 col-lg-2">
-                            <label for="episode" class="form-label">
-                                話数
-                            </label>
-                            <input type="number" id="episode" class="form-control" min="1" placeholder="1" required>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-2">
-                            <label for="startDate" class="form-label">
-                                見始めた日
-                            </label>
-                            <input type="date" id="startDate" class="form-control">
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-2">
-                            <label for="lastDate" class="form-label">
-                                最近見た日
-                            </label>
-                            <input type="date" id="lastDate" class="form-control">
-                        </div>
-                        <div class="col-12 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary px-4">
-                                追加
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-        
+
+            <div>
+                <button id="addrow" class="btn btn-primary" type="button">追加</button>
+            </div>
+                
             <div class="card shadow-sm border-0">
         
                 <div class="table-responsive">
@@ -83,6 +42,7 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
+                                <th>完結の有無</th>
                                 <th>タイトル</th>
                                 <th>シーズン</th>
                                 <th>話数</th>
