@@ -1,44 +1,47 @@
 const addRowButton: HTMLElement | null = document.getElementById('addrowbutton');
 const tableBody: HTMLElement | null = document.getElementById('tablebody');
 
-const addRow = () => {
+function onAddRow(): void {
     const COLUMN_COUNT: number = 6;
+    const END_CHECK_COLUMN: number = 0;
+    const TITLE_COLUMN: number = 1;
+    const SEASON_COLUMN: number = 2;
+    const EPISODE_COLUMN: number = 3;
+    const START_DATE_COLUMN: number = 4;
+    const LAST_WATCH_DATE_COLUMN: number = 5;
 
     const tableRow: HTMLElement = document.createElement('tr');
 
-    for (let count = 0; count < COLUMN_COUNT; count++) {
+    createRecord();
+
+    for (let columnIndex = 0; columnIndex < COLUMN_COUNT; columnIndex++) {
         const tableData: HTMLElement = document.createElement('td');
         const columnInput: HTMLElement = document.createElement('input');
 
-        switch (count) {
-            case 0:
+        switch (columnIndex) {
+            case END_CHECK_COLUMN:
                 columnInput.setAttribute('type', 'checkbox');
-
                 tableData.appendChild(columnInput);
                 break;
-            case 1:
+            case TITLE_COLUMN:
                 tableData.appendChild(columnInput);
                 break;
-            case 2:
+            case SEASON_COLUMN:
                 columnInput.setAttribute('style', 'width: 100px')
                 columnInput.setAttribute('type', 'number');
-
                 tableData.appendChild(columnInput);
                 break;
-            case 3:
+            case EPISODE_COLUMN:
                 columnInput.setAttribute('style', 'width: 100px')
                 columnInput.setAttribute('type', 'number');
-
                 tableData.appendChild(columnInput);
                 break;
-            case 4:
+            case START_DATE_COLUMN:
                 columnInput.setAttribute('type', 'date');
-
                 tableData.appendChild(columnInput);
                 break;
-            case 5:
+            case LAST_WATCH_DATE_COLUMN:
                 columnInput.setAttribute('type', 'date');
-
                 tableData.appendChild(columnInput);
                 break;
         }
@@ -47,4 +50,32 @@ const addRow = () => {
     tableBody!.appendChild(tableRow);
 };
 
-addRowButton!.addEventListener("click", addRow);
+addRowButton!.addEventListener("click", onAddRow);
+
+function createRecord(): void {
+    type AnimeRecord = {
+        id: string,
+        isCompleted: boolean,
+        title: string,
+        season: number,
+        episode: number,
+        startDate: string,
+        lastWatchDate: string
+    }
+
+    const newRecord: AnimeRecord =
+    {
+        id: crypto.randomUUID(),
+        isCompleted: false,
+        title: '',
+        season: 0,
+        episode: 0,
+        startDate: '',
+        lastWatchDate: ''
+    };
+
+    const animeStorage: AnimeRecord[] = [];
+
+    animeStorage.push(newRecord);
+    console.log(animeStorage);
+}
