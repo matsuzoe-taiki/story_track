@@ -74,8 +74,22 @@ function createRecord(): void {
         lastWatchDate: ''
     };
 
-    const animeStorage: AnimeRecord[] = [];
+    if (localStorage.length === 0) {
+        const animeRecords: AnimeRecord[] = [];
 
-    animeStorage.push(newRecord);
-    console.log(animeStorage);
+        animeRecords.push(newRecord);
+        localStorage.setItem("animes", JSON.stringify(animeRecords));
+        return
+    }
+
+    const datas = localStorage.getItem("animes");
+
+    if (datas === null) {
+        return;
+    }
+
+    const animeRecords: AnimeRecord[] = JSON.parse(datas);
+
+    animeRecords.push(newRecord);
+    localStorage.setItem("animes", JSON.stringify(animeRecords));
 }
