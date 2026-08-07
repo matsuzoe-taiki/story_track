@@ -28,7 +28,7 @@ function onAddRow(): void {
                 columnInput.setAttribute('data-id', rowId);
                 tableData.appendChild(columnInput);
 
-                columnInput.addEventListener("input", onEndCheckChange)
+                columnInput.addEventListener("change", onEndCheckChange);
                 break;
             case TITLE_COLUMN:
                 tableData.appendChild(columnInput);
@@ -62,8 +62,10 @@ function onAddRow(): void {
     tableBody!.appendChild(tableRow);
 };
 
-function onEndCheckChange() {
-
+function onEndCheckChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id;
+    const judgement = target.checked;
 }
 
 addRowButton!.addEventListener("click", onAddRow);
