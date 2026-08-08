@@ -1,6 +1,16 @@
 const addRowButton: HTMLElement | null = document.getElementById('addrowbutton');
 const tableBody: HTMLElement | null = document.getElementById('tablebody');
 
+type AnimeRecord = {
+    id: string,
+    isCompleted: boolean,
+    title: string,
+    season: number,
+    episode: number,
+    startDate: string,
+    lastWatchDate: string
+}
+
 function onAddRow(): void {
     const COLUMN_COUNT: number = 6;
     const END_CHECK_COLUMN: number = 0;
@@ -26,34 +36,39 @@ function onAddRow(): void {
             case END_CHECK_COLUMN:
                 columnInput.setAttribute('type', 'checkbox');
                 columnInput.setAttribute('data-id', rowId);
+                columnInput.setAttribute('data-column', 'isCompleted');
                 tableData.appendChild(columnInput);
-
                 columnInput.addEventListener("change", onEndCheckChange);
                 break;
             case TITLE_COLUMN:
                 tableData.appendChild(columnInput);
                 columnInput.setAttribute('data-id', rowId);
+                columnInput.setAttribute('data-column', 'title');
                 break;
             case SEASON_COLUMN:
                 columnInput.setAttribute('style', 'width: 100px')
                 columnInput.setAttribute('type', 'number');
                 columnInput.setAttribute('data-id', rowId);
+                columnInput.setAttribute('data-id', 'season');
                 tableData.appendChild(columnInput);
                 break;
             case EPISODE_COLUMN:
                 columnInput.setAttribute('style', 'width: 100px')
                 columnInput.setAttribute('type', 'number');
                 columnInput.setAttribute('data-id', rowId);
+                columnInput.setAttribute('data-column', 'episode');
                 tableData.appendChild(columnInput);
                 break;
             case START_DATE_COLUMN:
                 columnInput.setAttribute('type', 'date');
                 columnInput.setAttribute('data-id', rowId);
+                columnInput.setAttribute('data-column', 'startDate');
                 tableData.appendChild(columnInput);
                 break;
             case LAST_WATCH_DATE_COLUMN:
                 columnInput.setAttribute('type', 'date');
                 columnInput.setAttribute('data-id', rowId);
+                columnInput.setAttribute('data-column', 'lastWatchDate');
                 tableData.appendChild(columnInput);
                 break;
         }
@@ -64,23 +79,16 @@ function onAddRow(): void {
 
 function onEndCheckChange(event: Event) {
     const target = event.target as HTMLInputElement;
-    const id = target.dataset.id;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
     const judgement = target.checked;
+
+    updateRecord(id, columnName, judgement);
 }
 
 addRowButton!.addEventListener("click", onAddRow);
 
 function createRecord(recordId: string): void {
-    type AnimeRecord = {
-        id: string,
-        isCompleted: boolean,
-        title: string,
-        season: number,
-        episode: number,
-        startDate: string,
-        lastWatchDate: string
-    }
-
     const newRecord: AnimeRecord =
     {
         id: recordId,
@@ -110,4 +118,35 @@ function createRecord(recordId: string): void {
 
     animeRecords.push(newRecord);
     localStorage.setItem("animes", JSON.stringify(animeRecords));
+}
+
+function updateRecord(
+    id: string,
+    columnName: string,
+    information: string | boolean
+) {
+
+    const datas = localStorage.getItem("animes");
+
+    if (datas === null) {
+        return;
+    }
+
+    const animeRecords: AnimeRecord[] = JSON.parse(datas);
+    const animes: AnimeRecord[] = []
+
+    for (const anime of animeRecords) {
+        if (id === anime.id) {
+            if (columnName === "isCompleted" &&
+                typeof information === "boolean"
+            ) {
+                anime.isCompleted = information;
+                animes.push(anime);
+            }
+        } else {
+            animes.push(anime);
+        }
+    }
+
+    localStorage.setItem("animes", JSON.stringify(animes));
 }
