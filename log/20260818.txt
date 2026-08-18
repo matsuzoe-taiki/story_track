@@ -1,0 +1,4 @@
+今日やったこと：
+readRecord functionの作成、updateRecord functionのforループブロック内のif文をswitch文に変えた。
+次やりたいこと：
+switch文が今、isCompletedカラムしか対応していないから、他のカラムもupdateできるようにする。
