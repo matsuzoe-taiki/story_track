@@ -135,12 +135,14 @@ function updateRecord(
 
     for (const anime of animes) {
         if (id === anime.id) {
-            if (columnName === "isCompleted" &&
-                typeof information === "boolean"
-            ) {
-                anime.isCompleted = information;
-                updateAnimes.push(anime);
+
+            switch (columnName) {
+                case "isCompleted":
+                    if (typeof information === "boolean") anime.isCompleted = information;
+                    break;
             }
+
+            updateAnimes.push(anime);
         } else {
             updateAnimes.push(anime);
         }
