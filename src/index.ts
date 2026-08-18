@@ -89,7 +89,7 @@ function onEndCheckChange(event: Event) {
 addRowButton!.addEventListener("click", onAddRow);
 
 function createRecord(recordId: string): void {
-    const newRecord: AnimeRecord =
+    const anime: AnimeRecord =
     {
         id: recordId,
         isCompleted: false,
@@ -101,23 +101,23 @@ function createRecord(recordId: string): void {
     };
 
     if (localStorage.length === 0) {
-        const animeRecords: AnimeRecord[] = [];
+        const newAnimes: AnimeRecord[] = [];
 
-        animeRecords.push(newRecord);
-        localStorage.setItem("animes", JSON.stringify(animeRecords));
+        newAnimes.push(anime);
+        localStorage.setItem("animes", JSON.stringify(newAnimes));
         return
     }
 
-    const datas = localStorage.getItem("animes");
+    const storageAnimes = localStorage.getItem("animes");
 
-    if (datas === null) {
+    if (storageAnimes === null) {
         return;
     }
 
-    const animeRecords: AnimeRecord[] = JSON.parse(datas);
+    const animes: AnimeRecord[] = JSON.parse(storageAnimes);
 
-    animeRecords.push(newRecord);
-    localStorage.setItem("animes", JSON.stringify(animeRecords));
+    animes.push(anime);
+    localStorage.setItem("animes", JSON.stringify(animes));
 }
 
 function updateRecord(
@@ -126,27 +126,37 @@ function updateRecord(
     information: string | boolean
 ) {
 
-    const datas = localStorage.getItem("animes");
+    const animes = readRecord();
+    const updateAnimes: AnimeRecord[] = [];
 
-    if (datas === null) {
+    if (animes === undefined) {
         return;
     }
 
-    const animeRecords: AnimeRecord[] = JSON.parse(datas);
-    const animes: AnimeRecord[] = []
-
-    for (const anime of animeRecords) {
+    for (const anime of animes) {
         if (id === anime.id) {
-            if (columnName === "isCompleted" &&
-                typeof information === "boolean"
-            ) {
-                anime.isCompleted = information;
-                animes.push(anime);
+            switch (columnName) {
+                case "isCompleted":
+                    if (typeof information === "boolean") anime.isCompleted = information;
+                    break;
             }
+            updateAnimes.push(anime);
         } else {
-            animes.push(anime);
+            updateAnimes.push(anime);
         }
     }
 
-    localStorage.setItem("animes", JSON.stringify(animes));
+    localStorage.setItem("animes", JSON.stringify(updateAnimes));
+}
+
+function readRecord() {
+    const storageAnimes = localStorage.getItem("animes");
+
+    if (storageAnimes === null) {
+        return;
+    }
+
+    const animes: AnimeRecord[] = JSON.parse(storageAnimes);
+
+    return animes
 }
