@@ -7,8 +7,8 @@ type AnimeRecord = {
     title: string,
     season: number,
     episode: number,
-    startDate: string,
-    lastWatchDate: string
+    startDate: Date | null,
+    lastWatchDate: Date | null
 }
 
 function onAddRow(): void {
@@ -41,16 +41,18 @@ function onAddRow(): void {
                 columnInput.addEventListener("change", onEndCheckChange);
                 break;
             case TITLE_COLUMN:
-                tableData.appendChild(columnInput);
                 columnInput.setAttribute('data-id', rowId);
                 columnInput.setAttribute('data-column', 'title');
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onTitleChange);
                 break;
             case SEASON_COLUMN:
                 columnInput.setAttribute('style', 'width: 100px')
                 columnInput.setAttribute('type', 'number');
                 columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-id', 'season');
+                columnInput.setAttribute('data-column', 'season');
                 tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onSeasonChange);
                 break;
             case EPISODE_COLUMN:
                 columnInput.setAttribute('style', 'width: 100px')
@@ -58,18 +60,21 @@ function onAddRow(): void {
                 columnInput.setAttribute('data-id', rowId);
                 columnInput.setAttribute('data-column', 'episode');
                 tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onEpisodeChange);
                 break;
             case START_DATE_COLUMN:
                 columnInput.setAttribute('type', 'date');
                 columnInput.setAttribute('data-id', rowId);
                 columnInput.setAttribute('data-column', 'startDate');
                 tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onStartDateChange);
                 break;
             case LAST_WATCH_DATE_COLUMN:
                 columnInput.setAttribute('type', 'date');
                 columnInput.setAttribute('data-id', rowId);
                 columnInput.setAttribute('data-column', 'lastWatchDate');
                 tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onLastWatchDateChange);
                 break;
         }
         tableRow.appendChild(tableData);
@@ -86,6 +91,51 @@ function onEndCheckChange(event: Event) {
     updateRecord(id, columnName, judgement);
 }
 
+function onTitleChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const title = target.value;
+    
+    updateRecord(id, columnName, title);
+}
+
+function onSeasonChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const season = target.valueAsNumber;
+
+    updateRecord(id, columnName, season);
+}
+
+function onEpisodeChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const episode = target.valueAsNumber;
+
+    updateRecord(id, columnName, episode);
+}
+
+function onStartDateChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const startDate = target.valueAsDate!;
+
+    updateRecord(id, columnName, startDate);
+}
+
+function onLastWatchDateChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const lastWatchDate = target.valueAsDate!;
+
+    updateRecord(id, columnName, lastWatchDate);
+}
+
 addRowButton!.addEventListener("click", onAddRow);
 
 function createRecord(recordId: string): void {
@@ -96,8 +146,8 @@ function createRecord(recordId: string): void {
         title: '',
         season: 0,
         episode: 0,
-        startDate: '',
-        lastWatchDate: ''
+        startDate: null,
+        lastWatchDate: null 
     };
 
     if (localStorage.length === 0) {
@@ -123,7 +173,7 @@ function createRecord(recordId: string): void {
 function updateRecord(
     id: string,
     columnName: string,
-    information: string | boolean
+    information: string | boolean | number | Date
 ) {
 
     const animes = readRecord();
@@ -139,6 +189,22 @@ function updateRecord(
                 case "isCompleted":
                     if (typeof information === "boolean") anime.isCompleted = information;
                     break;
+                case "title":
+                    if (typeof information === "string") anime.title = information;
+                    break;
+                case "season":
+                    if (typeof information === "number") anime.season = information;
+                    break;
+                case "episode":
+                    if (typeof information === "number") anime.episode = information;
+                    break;
+                case "startDate":
+                    if (information instanceof Date) anime.startDate = information;
+                    break;
+                case "lastWatchDate":
+                    if (information instanceof Date) anime.lastWatchDate = information;
+                    break;
+    
             }
             updateAnimes.push(anime);
         } else {
