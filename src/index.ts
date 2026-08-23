@@ -11,75 +11,41 @@ type AnimeRecord = {
     lastWatchDate: Date | null
 }
 
-function onAddRow(): void {
-    const COLUMN_COUNT: number = 6;
-    const END_CHECK_COLUMN: number = 0;
-    const TITLE_COLUMN: number = 1;
-    const SEASON_COLUMN: number = 2;
-    const EPISODE_COLUMN: number = 3;
-    const START_DATE_COLUMN: number = 4;
-    const LAST_WATCH_DATE_COLUMN: number = 5;
+function onLoadAnime(): void {
+    const animes = readRecord();
 
+    if (animes === undefined) {
+        return;
+    };
+
+    tableBody!.replaceChildren();
+
+    for (const anime of animes) {
+        const tableRow = createTableRow(anime);
+        tableBody!.appendChild(tableRow);
+    };
+};
+
+function onAddAnime(): void {
     const rowId: string = crypto.randomUUID();
-
     const tableRow: HTMLElement = document.createElement('tr');
 
     tableRow.setAttribute('data-id', rowId);
 
     createRecord(rowId);
 
-    for (let columnIndex = 0; columnIndex < COLUMN_COUNT; columnIndex++) {
-        const tableData: HTMLElement = document.createElement('td');
-        const columnInput: HTMLElement = document.createElement('input');
+    const animes = readRecord();
 
-        switch (columnIndex) {
-            case END_CHECK_COLUMN:
-                columnInput.setAttribute('type', 'checkbox');
-                columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-column', 'isCompleted');
-                tableData.appendChild(columnInput);
-                columnInput.addEventListener("change", onEndCheckChange);
-                break;
-            case TITLE_COLUMN:
-                columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-column', 'title');
-                tableData.appendChild(columnInput);
-                columnInput.addEventListener("input", onTitleChange);
-                break;
-            case SEASON_COLUMN:
-                columnInput.setAttribute('style', 'width: 100px')
-                columnInput.setAttribute('type', 'number');
-                columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-column', 'season');
-                tableData.appendChild(columnInput);
-                columnInput.addEventListener("input", onSeasonChange);
-                break;
-            case EPISODE_COLUMN:
-                columnInput.setAttribute('style', 'width: 100px')
-                columnInput.setAttribute('type', 'number');
-                columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-column', 'episode');
-                tableData.appendChild(columnInput);
-                columnInput.addEventListener("input", onEpisodeChange);
-                break;
-            case START_DATE_COLUMN:
-                columnInput.setAttribute('type', 'date');
-                columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-column', 'startDate');
-                tableData.appendChild(columnInput);
-                columnInput.addEventListener("input", onStartDateChange);
-                break;
-            case LAST_WATCH_DATE_COLUMN:
-                columnInput.setAttribute('type', 'date');
-                columnInput.setAttribute('data-id', rowId);
-                columnInput.setAttribute('data-column', 'lastWatchDate');
-                tableData.appendChild(columnInput);
-                columnInput.addEventListener("input", onLastWatchDateChange);
-                break;
-        }
-        tableRow.appendChild(tableData);
+    if (animes === undefined) {
+        return;
     }
-    tableBody!.appendChild(tableRow);
+
+    tableBody!.replaceChildren();
+
+    for (const anime of animes) {
+        const tableRow: HTMLElement = createTableRow(anime);
+        tableBody!.appendChild(tableRow);
+    }
 };
 
 function onEndCheckChange(event: Event) {
@@ -136,7 +102,9 @@ function onLastWatchDateChange(event: Event) {
     updateRecord(id, columnName, lastWatchDate);
 }
 
-addRowButton!.addEventListener("click", onAddRow);
+window.addEventListener("load", onLoadAnime);
+
+addRowButton!.addEventListener("click", onAddAnime);
 
 function createRecord(recordId: string): void {
     const anime: AnimeRecord =
@@ -226,3 +194,78 @@ function readRecord() {
 
     return animes
 }
+
+function createTableRow(anime: AnimeRecord) {
+    const COLUMN_COUNT: number = 6;
+    const END_CHECK_COLUMN: number = 0;
+    const TITLE_COLUMN: number = 1;
+    const SEASON_COLUMN: number = 2;
+    const EPISODE_COLUMN: number = 3;
+    const START_DATE_COLUMN: number = 4;
+    const LAST_WATCH_DATE_COLUMN: number = 5;
+
+    const tableRow: HTMLElement = document.createElement('tr');
+
+    for (let columnIndex = 0; columnIndex < COLUMN_COUNT; columnIndex++) {
+        const tableData: HTMLElement = document.createElement('td');
+        const columnInput: HTMLElement = document.createElement('input');
+
+        switch (columnIndex) {
+            case END_CHECK_COLUMN:
+                columnInput.setAttribute('type', 'checkbox');
+                columnInput.setAttribute('data-id', anime.id);
+                columnInput.setAttribute('data-column', 'isCompleted');
+                (columnInput as HTMLInputElement).checked = anime.isCompleted;
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("change", onEndCheckChange);
+                break;
+            case TITLE_COLUMN:
+                columnInput.setAttribute('data-id', anime.id);
+                columnInput.setAttribute('data-column', 'title');
+                (columnInput as HTMLInputElement).value = anime.title;
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onTitleChange);
+                break;
+            case SEASON_COLUMN:
+                columnInput.setAttribute('style', 'width: 100px')
+                columnInput.setAttribute('type', 'number');
+                columnInput.setAttribute('data-id', anime.id);
+                columnInput.setAttribute('data-column', 'season');
+                (columnInput as HTMLInputElement).valueAsNumber = anime.season;
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onSeasonChange);
+                break;
+            case EPISODE_COLUMN:
+                columnInput.setAttribute('style', 'width: 100px')
+                columnInput.setAttribute('type', 'number');
+                columnInput.setAttribute('data-id', anime.id);
+                columnInput.setAttribute('data-column', 'episode');
+                (columnInput as HTMLInputElement).valueAsNumber = anime.episode;                
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onEpisodeChange);
+                break;
+            case START_DATE_COLUMN:
+                columnInput.setAttribute('type', 'date');
+                columnInput.setAttribute('data-id', anime.id);
+                columnInput.setAttribute('data-column', 'startDate');
+                if (anime.startDate != null) {
+                    (columnInput as HTMLInputElement).valueAsDate = new Date(anime.startDate);
+                };
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onStartDateChange);
+                break;
+            case LAST_WATCH_DATE_COLUMN:
+                columnInput.setAttribute('type', 'date');
+                columnInput.setAttribute('data-id', anime.id);
+                columnInput.setAttribute('data-column', 'lastWatchDate');
+                if (anime.lastWatchDate != null) {
+                    (columnInput as HTMLInputElement).valueAsDate = new Date(anime.lastWatchDate);
+                };
+                tableData.appendChild(columnInput);
+                columnInput.addEventListener("input", onLastWatchDateChange);
+                break;
+        };
+        tableRow.appendChild(tableData);
+    };
+    return tableRow;
+};
