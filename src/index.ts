@@ -23,36 +23,6 @@ function onLoadAnime(): void {
     renderRecords(animes);
 };
 
-function renderEmptyState(): void {
-    const emptyRow = document.createElement('tr');
-    emptyRow.className = 'empty-state';
-    emptyRow.innerHTML = `
-        <td colspan="7">
-            <div class="empty-icon"><i class="bi bi-book" aria-hidden="true"></i></div>
-            <strong>まだ作品が登録されていません</strong>
-            <span>「新しい作品を追加」から記録を始めましょう</span>
-        </td>
-    `;
-    tableBody!.replaceChildren(emptyRow);
-    recordCount!.textContent = '0 TITLES';
-}
-
-function renderRecords(animes: AnimeRecord[]): void {
-    if (animes.length === 0) {
-        renderEmptyState();
-        return;
-    }
-
-    tableBody!.replaceChildren();
-
-    for (const anime of animes) {
-        const tableRow = createTableRow(anime);
-        tableBody!.appendChild(tableRow);
-    };
-
-    recordCount!.textContent = `${animes.length} ${animes.length === 1 ? 'TITLE' : 'TITLES'}`;
-}
-
 function onAddAnime(): void {
     const rowId: string = crypto.randomUUID();
     const tableRow: HTMLElement = document.createElement('tr');
@@ -355,3 +325,33 @@ function createTableRow(anime: AnimeRecord) {
     };
     return tableRow;
 };
+
+function renderEmptyState(): void {
+    const emptyRow = document.createElement('tr');
+    emptyRow.className = 'empty-state';
+    emptyRow.innerHTML = `
+        <td colspan="7">
+            <div class="empty-icon"><i class="bi bi-book" aria-hidden="true"></i></div>
+            <strong>まだ作品が登録されていません</strong>
+            <span>「新しい作品を追加」から記録を始めましょう</span>
+        </td>
+    `;
+    tableBody!.replaceChildren(emptyRow);
+    recordCount!.textContent = '0 TITLES';
+}
+
+function renderRecords(animes: AnimeRecord[]): void {
+    if (animes.length === 0) {
+        renderEmptyState();
+        return;
+    }
+
+    tableBody!.replaceChildren();
+
+    for (const anime of animes) {
+        const tableRow = createTableRow(anime);
+        tableBody!.appendChild(tableRow);
+    };
+
+    recordCount!.textContent = `${animes.length} ${animes.length === 1 ? 'TITLE' : 'TITLES'}`;
+}
