@@ -102,7 +102,20 @@ function onLastWatchDateChange(event: Event) {
     updateRecord(id, columnName, lastWatchDate);
 }
 
-window.addEventListener("load", onLoadAnime);
+function onDeleteClick(event: Event) {
+    const isConfirmed = confirm('【警告】\n削除してよろしいですか？\n');
+
+    if (isConfirmed) {
+        const target = event.currentTarget as HTMLButtonElement;
+        const id = target.dataset.id!;
+    
+        deleteRecord(id);
+    } else {
+        return;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', onLoadAnime);
 
 addRowButton!.addEventListener("click", onAddAnime);
 
@@ -119,10 +132,10 @@ function createRecord(recordId: string): void {
     };
 
     if (localStorage.length === 0) {
-        const newAnimes: AnimeRecord[] = [];
+        const updatedAnimes: AnimeRecord[] = [];
 
-        newAnimes.push(anime);
-        localStorage.setItem("animes", JSON.stringify(newAnimes));
+        updatedAnimes.push(anime);
+        localStorage.setItem("animes", JSON.stringify(updatedAnimes));
         return
     }
 
@@ -138,6 +151,18 @@ function createRecord(recordId: string): void {
     localStorage.setItem("animes", JSON.stringify(animes));
 }
 
+function readRecord() {
+    const storageAnimes = localStorage.getItem("animes");
+
+    if (storageAnimes === null) {
+        return;
+    }
+
+    const animes: AnimeRecord[] = JSON.parse(storageAnimes);
+
+    return animes
+}
+
 function updateRecord(
     id: string,
     columnName: string,
@@ -145,7 +170,7 @@ function updateRecord(
 ) {
 
     const animes = readRecord();
-    const updateAnimes: AnimeRecord[] = [];
+    const updatedAnimes: AnimeRecord[] = [];
 
     if (animes === undefined) {
         return;
@@ -174,35 +199,43 @@ function updateRecord(
                     break;
     
             }
-            updateAnimes.push(anime);
+            updatedAnimes.push(anime);
         } else {
-            updateAnimes.push(anime);
+            updatedAnimes.push(anime);
         }
     }
 
-    localStorage.setItem("animes", JSON.stringify(updateAnimes));
+    localStorage.setItem("animes", JSON.stringify(updatedAnimes));
 }
 
-function readRecord() {
-    const storageAnimes = localStorage.getItem("animes");
+function deleteRecord(id: string) {
+    const animes = readRecord();
 
-    if (storageAnimes === null) {
-        return;
+    if (animes === undefined) {
+        throw new Error('animesが空です');
     }
 
-    const animes: AnimeRecord[] = JSON.parse(storageAnimes);
+    for (let index = 0; index < animes.length; index++) {
+        if (id === animes[index]?.id) {
+            animes.splice(index, 1);
+            break;
+        }
+    }
 
-    return animes
+    localStorage.setItem("animes", JSON.stringify(animes));
+
+    onLoadAnime();
 }
 
 function createTableRow(anime: AnimeRecord) {
-    const COLUMN_COUNT: number = 6;
+    const COLUMN_COUNT: number = 7;
     const END_CHECK_COLUMN: number = 0;
     const TITLE_COLUMN: number = 1;
     const SEASON_COLUMN: number = 2;
     const EPISODE_COLUMN: number = 3;
     const START_DATE_COLUMN: number = 4;
     const LAST_WATCH_DATE_COLUMN: number = 5;
+    const DLETE_COLUMN: number = 6;
 
     const tableRow: HTMLElement = document.createElement('tr');
 
@@ -263,6 +296,21 @@ function createTableRow(anime: AnimeRecord) {
                 };
                 tableData.appendChild(columnInput);
                 columnInput.addEventListener("input", onLastWatchDateChange);
+                break;
+            case DLETE_COLUMN:
+                const deleteButton: HTMLButtonElement = document.createElement('button');
+
+                deleteButton.type = "button";
+                deleteButton.className = "btn btn-outline-danger btn-sm";
+                deleteButton.dataset.id = anime.id;
+
+                const deleteIcon: HTMLElement = document.createElement('image');
+                deleteIcon.className = 'bi bi-trash';
+
+                deleteButton.appendChild(deleteIcon);
+
+                tableData.appendChild(deleteButton);
+                deleteButton.addEventListener("click", onDeleteClick);
                 break;
         };
         tableRow.appendChild(tableData);
