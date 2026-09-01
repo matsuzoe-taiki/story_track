@@ -228,7 +228,7 @@ function createTableRow(anime: AnimeRecord) {
     const EPISODE_COLUMN: number = 3;
     const START_DATE_COLUMN: number = 4;
     const LAST_WATCH_DATE_COLUMN: number = 5;
-    const DLETE_COLUMN: number = 6;
+    const DELETE_COLUMN: number = 6;
 
     const tableRow: HTMLElement = document.createElement('tr');
     tableRow.classList.toggle('is-completed', anime.isCompleted);
@@ -304,7 +304,7 @@ function createTableRow(anime: AnimeRecord) {
                 tableData.appendChild(columnInput);
                 columnInput.addEventListener("input", onLastWatchDateChange);
                 break;
-            case DLETE_COLUMN:
+            case DELETE_COLUMN:
                 const deleteButton: HTMLButtonElement = document.createElement('button');
 
                 deleteButton.type = "button";
