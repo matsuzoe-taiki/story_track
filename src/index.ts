@@ -1,4 +1,4 @@
-const addRowButton: HTMLElement | null = document.getElementById('addrowbutton');
+const addRecordButton: HTMLElement | null = document.getElementById('addrecordbutton');
 const tableBody: HTMLElement | null = document.getElementById('tablebody');
 const recordCount: HTMLElement | null = document.getElementById('record-count');
 
@@ -110,7 +110,7 @@ function onDeleteClick(event: Event) {
 
 document.addEventListener('DOMContentLoaded', onLoadAnime);
 
-addRowButton!.addEventListener("click", onAddAnime);
+addRecordButton!.addEventListener("click", onAddAnime);
 
 function createRecord(recordId: string): void {
     const anime: AnimeRecord =
