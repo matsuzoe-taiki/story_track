@@ -40,7 +40,7 @@ function onAddAnime(): void {
     renderRecords(animes);
 };
 
-function onEndCheckChange(event: Event) {
+function onIsCompletedChange(event: Event) {
     const target = event.target as HTMLInputElement;
     const id = target.dataset.id!;
     const columnName = target.dataset.column!;
@@ -246,7 +246,7 @@ function createTableRow(anime: AnimeRecord) {
                 columnInput.setAttribute('data-column', 'isCompleted');
                 (columnInput as HTMLInputElement).checked = anime.isCompleted;
                 tableData.appendChild(columnInput);
-                columnInput.addEventListener("change", onEndCheckChange);
+                columnInput.addEventListener("change", onIsCompletedChange);
                 break;
             case TITLE_COLUMN:
                 columnInput.className = 'cell-input';
