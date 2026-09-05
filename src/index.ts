@@ -1,4 +1,4 @@
-const addRowButton: HTMLElement | null = document.getElementById('addrowbutton');
+const addRecordButton: HTMLElement | null = document.getElementById('addrecordbutton');
 const tableBody: HTMLElement | null = document.getElementById('tablebody');
 const recordCount: HTMLElement | null = document.getElementById('record-count');
 
@@ -40,7 +40,7 @@ function onAddAnime(): void {
     renderRecords(animes);
 };
 
-function onEndCheckChange(event: Event) {
+function onIsCompletedChange(event: Event) {
     const target = event.target as HTMLInputElement;
     const id = target.dataset.id!;
     const columnName = target.dataset.column!;
@@ -110,7 +110,7 @@ function onDeleteClick(event: Event) {
 
 document.addEventListener('DOMContentLoaded', onLoadAnime);
 
-addRowButton!.addEventListener("click", onAddAnime);
+addRecordButton!.addEventListener("click", onAddAnime);
 
 function createRecord(recordId: string): void {
     const anime: AnimeRecord =
@@ -228,7 +228,7 @@ function createTableRow(anime: AnimeRecord) {
     const EPISODE_COLUMN: number = 3;
     const START_DATE_COLUMN: number = 4;
     const LAST_WATCH_DATE_COLUMN: number = 5;
-    const DLETE_COLUMN: number = 6;
+    const DELETE_COLUMN: number = 6;
 
     const tableRow: HTMLElement = document.createElement('tr');
     tableRow.classList.toggle('is-completed', anime.isCompleted);
@@ -246,7 +246,7 @@ function createTableRow(anime: AnimeRecord) {
                 columnInput.setAttribute('data-column', 'isCompleted');
                 (columnInput as HTMLInputElement).checked = anime.isCompleted;
                 tableData.appendChild(columnInput);
-                columnInput.addEventListener("change", onEndCheckChange);
+                columnInput.addEventListener("change", onIsCompletedChange);
                 break;
             case TITLE_COLUMN:
                 columnInput.className = 'cell-input';
@@ -304,7 +304,7 @@ function createTableRow(anime: AnimeRecord) {
                 tableData.appendChild(columnInput);
                 columnInput.addEventListener("input", onLastWatchDateChange);
                 break;
-            case DLETE_COLUMN:
+            case DELETE_COLUMN:
                 const deleteButton: HTMLButtonElement = document.createElement('button');
 
                 deleteButton.type = "button";
