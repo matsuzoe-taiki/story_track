@@ -20,7 +20,7 @@ function onLoadAnime(): void {
     const animes = readRecord();
 
     if (animes === undefined) {
-        renderEmptyState();
+        showEmptyState();
         return;
     };
 
@@ -330,7 +330,7 @@ function createTableRow(anime: AnimeRecord) {
     return tableRow;
 };
 
-function renderEmptyState(): void {
+function showEmptyState(): void {
     const emptyRow = document.createElement('tr');
     emptyRow.className = 'empty-state';
     emptyRow.innerHTML = `
@@ -346,7 +346,7 @@ function renderEmptyState(): void {
 
 function showAnimes(animes: AnimeRecord[]): void {
     if (animes.length === 0) {
-        renderEmptyState();
+        showEmptyState();
         return;
     }
 
