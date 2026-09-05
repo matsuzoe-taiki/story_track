@@ -1,16 +1,20 @@
+import type { AnimeRecord } from "./types";
+import { createRecord, readRecord } from "./storage";
+import { updateRecord, deleteRecord } from "./storage";
+
 const addRecordButton: HTMLElement | null = document.getElementById('addrecordbutton');
 const tableBody: HTMLElement | null = document.getElementById('tablebody');
 const recordCount: HTMLElement | null = document.getElementById('record-count');
 
-type AnimeRecord = {
-    id: string,
-    isCompleted: boolean,
-    title: string,
-    season: number,
-    episode: number,
-    startDate: Date | null,
-    lastWatchDate: Date | null
-}
+// type AnimeRecord = {
+//     id: string,
+//     isCompleted: boolean,
+//     title: string,
+//     season: number,
+//     episode: number,
+//     startDate: Date | null,
+//     lastWatchDate: Date | null
+// }
 
 function onLoadAnime(): void {
     const animes = readRecord();
@@ -20,7 +24,7 @@ function onLoadAnime(): void {
         return;
     };
 
-    renderRecords(animes);
+    showAnimes(animes);
 };
 
 function onAddAnime(): void {
@@ -37,7 +41,7 @@ function onAddAnime(): void {
         return;
     }
 
-    renderRecords(animes);
+    showAnimes(animes);
 };
 
 function onIsCompletedChange(event: Event) {
@@ -112,113 +116,113 @@ document.addEventListener('DOMContentLoaded', onLoadAnime);
 
 addRecordButton!.addEventListener("click", onAddAnime);
 
-function createRecord(recordId: string): void {
-    const anime: AnimeRecord =
-    {
-        id: recordId,
-        isCompleted: false,
-        title: '',
-        season: 0,
-        episode: 0,
-        startDate: null,
-        lastWatchDate: null 
-    };
+// function createRecord(recordId: string): void {
+//     const anime: AnimeRecord =
+//     {
+//         id: recordId,
+//         isCompleted: false,
+//         title: '',
+//         season: 0,
+//         episode: 0,
+//         startDate: null,
+//         lastWatchDate: null 
+//     };
 
-    if (localStorage.length === 0) {
-        const updatedAnimes: AnimeRecord[] = [];
+//     if (localStorage.length === 0) {
+//         const updatedAnimes: AnimeRecord[] = [];
 
-        updatedAnimes.push(anime);
-        localStorage.setItem("animes", JSON.stringify(updatedAnimes));
-        return
-    }
+//         updatedAnimes.push(anime);
+//         localStorage.setItem("animes", JSON.stringify(updatedAnimes));
+//         return
+//     }
 
-    const storageAnimes = localStorage.getItem("animes");
+//     const storageAnimes = localStorage.getItem("animes");
 
-    if (storageAnimes === null) {
-        return;
-    }
+//     if (storageAnimes === null) {
+//         return;
+//     }
 
-    const animes: AnimeRecord[] = JSON.parse(storageAnimes);
+//     const animes: AnimeRecord[] = JSON.parse(storageAnimes);
 
-    animes.push(anime);
-    localStorage.setItem("animes", JSON.stringify(animes));
-}
+//     animes.push(anime);
+//     localStorage.setItem("animes", JSON.stringify(animes));
+// }
 
-function readRecord() {
-    const storageAnimes = localStorage.getItem("animes");
+// function readRecord() {
+//     const storageAnimes = localStorage.getItem("animes");
 
-    if (storageAnimes === null) {
-        return;
-    }
+//     if (storageAnimes === null) {
+//         return;
+//     }
 
-    const animes: AnimeRecord[] = JSON.parse(storageAnimes);
+//     const animes: AnimeRecord[] = JSON.parse(storageAnimes);
 
-    return animes
-}
+//     return animes
+// }
 
-function updateRecord(
-    id: string,
-    columnName: string,
-    information: string | boolean | number | Date
-) {
+// function updateRecord(
+//     id: string,
+//     columnName: string,
+//     information: string | boolean | number | Date
+// ) {
 
-    const animes = readRecord();
-    const updatedAnimes: AnimeRecord[] = [];
+//     const animes = readRecord();
+//     const updatedAnimes: AnimeRecord[] = [];
 
-    if (animes === undefined) {
-        return;
-    }
+//     if (animes === undefined) {
+//         return;
+//     }
 
-    for (const anime of animes) {
-        if (id === anime.id) {
-            switch (columnName) {
-                case "isCompleted":
-                    if (typeof information === "boolean") anime.isCompleted = information;
-                    break;
-                case "title":
-                    if (typeof information === "string") anime.title = information;
-                    break;
-                case "season":
-                    if (typeof information === "number") anime.season = information;
-                    break;
-                case "episode":
-                    if (typeof information === "number") anime.episode = information;
-                    break;
-                case "startDate":
-                    if (information instanceof Date) anime.startDate = information;
-                    break;
-                case "lastWatchDate":
-                    if (information instanceof Date) anime.lastWatchDate = information;
-                    break;
+//     for (const anime of animes) {
+//         if (id === anime.id) {
+//             switch (columnName) {
+//                 case "isCompleted":
+//                     if (typeof information === "boolean") anime.isCompleted = information;
+//                     break;
+//                 case "title":
+//                     if (typeof information === "string") anime.title = information;
+//                     break;
+//                 case "season":
+//                     if (typeof information === "number") anime.season = information;
+//                     break;
+//                 case "episode":
+//                     if (typeof information === "number") anime.episode = information;
+//                     break;
+//                 case "startDate":
+//                     if (information instanceof Date) anime.startDate = information;
+//                     break;
+//                 case "lastWatchDate":
+//                     if (information instanceof Date) anime.lastWatchDate = information;
+//                     break;
     
-            }
-            updatedAnimes.push(anime);
-        } else {
-            updatedAnimes.push(anime);
-        }
-    }
+//             }
+//             updatedAnimes.push(anime);
+//         } else {
+//             updatedAnimes.push(anime);
+//         }
+//     }
 
-    localStorage.setItem("animes", JSON.stringify(updatedAnimes));
-}
+//     localStorage.setItem("animes", JSON.stringify(updatedAnimes));
+// }
 
-function deleteRecord(id: string) {
-    const animes = readRecord();
+// function deleteRecord(id: string) {
+//     const animes = readRecord();
 
-    if (animes === undefined) {
-        throw new Error('animesが空です');
-    }
+//     if (animes === undefined) {
+//         throw new Error('animesが空です');
+//     }
 
-    for (let index = 0; index < animes.length; index++) {
-        if (id === animes[index]?.id) {
-            animes.splice(index, 1);
-            break;
-        }
-    }
+//     for (let index = 0; index < animes.length; index++) {
+//         if (id === animes[index]?.id) {
+//             animes.splice(index, 1);
+//             break;
+//         }
+//     }
 
-    localStorage.setItem("animes", JSON.stringify(animes));
+//     localStorage.setItem("animes", JSON.stringify(animes));
 
-    onLoadAnime();
-}
+//     onLoadAnime();
+// }
 
 function createTableRow(anime: AnimeRecord) {
     const COLUMN_COUNT: number = 7;
@@ -340,7 +344,7 @@ function renderEmptyState(): void {
     recordCount!.textContent = '0 TITLES';
 }
 
-function renderRecords(animes: AnimeRecord[]): void {
+function showAnimes(animes: AnimeRecord[]): void {
     if (animes.length === 0) {
         renderEmptyState();
         return;
