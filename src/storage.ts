@@ -1,4 +1,5 @@
-import type { AnimeRecord } from "./types";
+import type { AnimeRecord } from "./types.js";
+import { loadInitialOperation } from "./index.js";
 
 export function createRecord(recordId: string): void {
   const anime: AnimeRecord =
@@ -90,20 +91,20 @@ export function updateRecord(
 }
 
 export function deleteRecord(id: string) {
-  const animes = readRecord();
+    const animes = readRecord();
 
-  if (animes === undefined) {
-      throw new Error('animesが空です');
-  }
+    if (animes === undefined) {
+        throw new Error('animesが空です');
+    }
 
-  for (let index = 0; index < animes.length; index++) {
-      if (id === animes[index]?.id) {
-          animes.splice(index, 1);
-          break;
-      }
-  }
+    for (let index = 0; index < animes.length; index++) {
+        if (id === animes[index]?.id) {
+            animes.splice(index, 1);
+            break;
+        }
+    }
 
-  localStorage.setItem("animes", JSON.stringify(animes));
+    localStorage.setItem("animes", JSON.stringify(animes));
 
-  loadInitialOperation();
+    loadInitialOperation();
 }
