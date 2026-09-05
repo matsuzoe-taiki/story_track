@@ -16,7 +16,7 @@ const recordCount: HTMLElement | null = document.getElementById('record-count');
 //     lastWatchDate: Date | null
 // }
 
-function onLoadAnime(): void {
+function loadInitialOperation(): void {
     const animes = readRecord();
 
     if (animes === undefined) {
@@ -112,7 +112,7 @@ function onDeleteClick(event: Event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', onLoadAnime);
+document.addEventListener('DOMContentLoaded', loadInitialOperation);
 
 addRecordButton!.addEventListener("click", onAddAnime);
 
@@ -221,7 +221,7 @@ addRecordButton!.addEventListener("click", onAddAnime);
 
 //     localStorage.setItem("animes", JSON.stringify(animes));
 
-//     onLoadAnime();
+//     loadInitialOperation();
 // }
 
 function createTableRow(anime: AnimeRecord) {

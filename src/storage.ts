@@ -105,5 +105,5 @@ export function deleteRecord(id: string) {
 
   localStorage.setItem("animes", JSON.stringify(animes));
 
-  onLoadAnime();
+  loadInitialOperation();
 }
