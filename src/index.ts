@@ -5,7 +5,6 @@ import { showAnimes, showEmptyState } from "./display.js";
 const addRecordButton: HTMLElement | null = document.getElementById('addrecordbutton');
 
 export function loadInitialOperation(): void {
-    console.log('こんにちは')
     const animes = readRecord();
 
     if (animes === undefined) {
