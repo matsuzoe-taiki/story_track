@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+
 import { test, expect } from "vitest";
 import { readRecord } from "./storage";
 

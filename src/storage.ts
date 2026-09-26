@@ -1,5 +1,4 @@
 import type { AnimeRecord } from "./types.js";
-import { loadInitialOperation } from "./index.js";
 
 export function createRecord(recordId: string): void {
     const anime: AnimeRecord =
@@ -42,7 +41,15 @@ export function readRecord() {
 
     const animes: AnimeRecord[] = JSON.parse(storageAnimes);
 
-    return animes
+    const converted_animes = animes.map((anime) => {
+        return {
+            ...anime,
+            startDate: anime.startDate ? new Date(anime.startDate) : null,
+            lastWatchDate: anime.lastWatchDate ? new Date(anime.lastWatchDate) : null
+        }
+    })
+
+    return converted_animes
 }
 
 export function updateRecord(
@@ -105,6 +112,4 @@ export function deleteRecord(id: string) {
     }
 
     localStorage.setItem("animes", JSON.stringify(animes));
-
-    loadInitialOperation();
 }
