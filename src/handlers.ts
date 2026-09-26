@@ -1,92 +1,92 @@
 import { showAnimes } from "./display.js";
 import {
-  createRecord,
-  readRecord,
-  updateRecord,
-  deleteRecord
+    createRecord,
+    readRecord,
+    updateRecord,
+    deleteRecord
 } from "./storage.js";
 
 export function onAddAnime(): void {
-  const rowId: string = crypto.randomUUID();
-  const tableRow: HTMLElement = document.createElement('tr');
+    const rowId: string = crypto.randomUUID();
+    const tableRow: HTMLElement = document.createElement('tr');
 
-  tableRow.setAttribute('data-id', rowId);
+    tableRow.setAttribute('data-id', rowId);
 
-  createRecord(rowId);
+    createRecord(rowId);
 
-  const animes = readRecord();
+    const animes = readRecord();
 
-  if (animes === undefined) {
-      return;
-  }
+    if (animes === undefined) {
+        return;
+    }
 
-  showAnimes(animes);
+    showAnimes(animes);
 };
 
 export function onIsCompletedChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const id = target.dataset.id!;
-  const columnName = target.dataset.column!;
-  const judgement = target.checked;
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const judgement = target.checked;
 
-  updateRecord(id, columnName, judgement);
-  target.closest('tr')?.classList.toggle('is-completed', judgement);
+    updateRecord(id, columnName, judgement);
+    target.closest('tr')?.classList.toggle('is-completed', judgement);
 }
 
 export function onTitleChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const id = target.dataset.id!;
-  const columnName = target.dataset.column!;
-  const title = target.value;
-  
-  updateRecord(id, columnName, title);
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const title = target.value;
+    
+    updateRecord(id, columnName, title);
 }
 
 export function onSeasonChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const id = target.dataset.id!;
-  const columnName = target.dataset.column!;
-  const season = target.valueAsNumber;
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const season = target.valueAsNumber;
 
-  updateRecord(id, columnName, season);
+    updateRecord(id, columnName, season);
 }
 
 export function onEpisodeChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const id = target.dataset.id!;
-  const columnName = target.dataset.column!;
-  const episode = target.valueAsNumber;
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const episode = target.valueAsNumber;
 
-  updateRecord(id, columnName, episode);
+    updateRecord(id, columnName, episode);
 }
 
 export function onStartDateChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const id = target.dataset.id!;
-  const columnName = target.dataset.column!;
-  const startDate = target.valueAsDate!;
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const startDate = target.valueAsDate!;
 
-  updateRecord(id, columnName, startDate);
+    updateRecord(id, columnName, startDate);
 }
 
 export function onLastWatchDateChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const id = target.dataset.id!;
-  const columnName = target.dataset.column!;
-  const lastWatchDate = target.valueAsDate!;
+    const target = event.target as HTMLInputElement;
+    const id = target.dataset.id!;
+    const columnName = target.dataset.column!;
+    const lastWatchDate = target.valueAsDate!;
 
-  updateRecord(id, columnName, lastWatchDate);
+    updateRecord(id, columnName, lastWatchDate);
 }
 
 export function onDeleteClick(event: Event) {
-  const isConfirmed = confirm('【警告】\n削除してよろしいですか？\n');
+    const isConfirmed = confirm('【警告】\n削除してよろしいですか？\n');
 
-  if (isConfirmed) {
-      const target = event.currentTarget as HTMLButtonElement;
-      const id = target.dataset.id!;
-  
-      deleteRecord(id);
-  } else {
-      return;
-  }
+    if (isConfirmed) {
+        const target = event.currentTarget as HTMLButtonElement;
+        const id = target.dataset.id!;
+    
+        deleteRecord(id);
+    } else {
+        return;
+    }
 }
