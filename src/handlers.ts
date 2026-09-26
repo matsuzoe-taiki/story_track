@@ -1,4 +1,5 @@
 import { showAnimes } from "./display.js";
+import { loadInitialOperation } from "./index.js";
 import {
     createRecord,
     readRecord,
@@ -86,6 +87,7 @@ export function onDeleteClick(event: Event) {
         const id = target.dataset.id!;
     
         deleteRecord(id);
+        loadInitialOperation();
     } else {
         return;
     }
